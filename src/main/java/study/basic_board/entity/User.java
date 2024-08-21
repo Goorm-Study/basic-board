@@ -11,8 +11,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// 근데 로그인 기능이 없는데,
+// 어떤 유저인 줄 어떻게 알고, 글이랑 댓글을 작성할 수 있게 하지??
+
 @Entity
-@Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본생성자는 막기
 public class User {
@@ -26,7 +28,7 @@ public class User {
     @Column(nullable = false)
     private LocalDate birth;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @Column(nullable = false)
@@ -48,7 +50,7 @@ public class User {
         this.createdTime = LocalDateTime.now();
     }
 
-    // 유저 정보 수정할 때 생성자
+    // 유저 정보 수정할 때 메서드
     public void updateUser(UserDto userDto) {
         this.username = userDto.getUsername();
         this.nickname = userDto.getNickname();
