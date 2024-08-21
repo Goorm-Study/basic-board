@@ -3,10 +3,12 @@ package study.basic_board.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import study.basic_board.dto.BoardRequestDto;
+import study.basic_board.dto.BoardResponseDto;
 import study.basic_board.entity.Board;
 import study.basic_board.entity.User;
 import study.basic_board.repository.BoardRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,17 +25,33 @@ public class BoardService {
 
 
     // 글 전체 검색
-    public List<Board> findAllBoards() {
-        return boardRepository.findAll();
+    public List<BoardResponseDto> findAllBoards() {
+        List<Board> boards = boardRepository.findAll();
+        List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
+        for (Board board : boards) {
+            boardResponseDtoList.add(new BoardResponseDto(board));
+        }
+
+        return boardResponseDtoList;
     }
 
     // 글 제목으로 검색
-    public List<Board> findBoardsByTitle(String title) {
-        return boardRepository.findBoardsByTitleContaining(title);
+    public List<BoardResponseDto> findBoardsByTitle(String title) {
+        List<Board> BoardList = boardRepository.findAll();
+        List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
+
+        for (Board board : BoardList) {
+            if (board.getTitle().contains(title)) {
+                boardResponseDtoList.add(new BoardResponseDto(board));
+            }
+        }
+
+        return boardResponseDtoList;
+        // BoardResponseDto를 통해서 전달
     }
 
 
-    // 글 수정
+    // 글 수정 : 현재 접속 유저 & 글 id & dto 정보 이용
     public void updateBoard(User user, Long id, BoardRequestDto boardRequestDto) {
         // 글 찾기
         Board board = boardRepository.findById(id).orElseThrow(

@@ -37,4 +37,8 @@ public class Comment extends BaseTimeEntity {
         this.board = board;
     }
 
+    // 댓글 수정할 때 쓰는 생성자
+    public void update(CommentRequestDto commentRequestDto) {
+        this.content = commentRequestDto.getContent();
+    }
 }
