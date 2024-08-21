@@ -17,7 +17,7 @@ public class UserService {
     // 유저 등록 구현
     public UserDto registerUser(UserDto userDto) {
         // 닉네임 중복되면 에러
-        if (!userRepository.existsByNickname(userDto.getNickname())) {
+        if (userRepository.existsByNickname(userDto.getNickname())) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
         }
 
