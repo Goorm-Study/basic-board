@@ -1,6 +1,7 @@
 package study.basic_board.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import study.basic_board.dto.UserDto;
 import study.basic_board.entity.User;
@@ -21,9 +22,13 @@ public class UserService {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
         }
 
-        User user = new User(userDto);
-        userRepository.save(user);
-        return userDto;
+        try {
+            User user = new User(userDto);
+            userRepository.save(user);
+            return userDto;
+        } catch(DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+        }
     }
 
 
