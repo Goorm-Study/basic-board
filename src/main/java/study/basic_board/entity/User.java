@@ -19,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본생성자는 막기
 public class User {
     @Id // primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userId")
     private Long id;
 
