@@ -25,12 +25,11 @@ public class UserService {
         try {
             User user = new User(userDto);
             userRepository.save(user);
-            return userDto;
+            return UserDto.of(user);
         } catch(DataIntegrityViolationException e) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
         }
     }
-
 
     // 유저 검색 기능
     // 1. 전체 검색 기능
