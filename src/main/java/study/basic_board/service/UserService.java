@@ -1,0 +1,69 @@
+package study.basic_board.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import study.basic_board.dto.UserDto;
+import study.basic_board.entity.User;
+import study.basic_board.repository.UserRepository;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+
+    // id 중복 확인
+    private boolean checkIdValueCondition(UserDto userDto) {
+        Long id = userDto.getId();
+        List<User> userList = userRepository.findAll();
+        for (User user : userList) {
+            if (user.getId().equals(id)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 유저 등록 구현
+    public UserDto registerUser(UserDto userDto) {
+        // id 중복되면 에러
+        if (!checkIdValueCondition(userDto)) {
+            throw new IllegalArgumentException("이미 존재하는 ID입니다.");
+        }
+
+        User user = new User(userDto);
+        userRepository.save(user);
+        return userDto;
+    }
+
+    // 유저 정보 수정 구현
+    public void updateUser(UserDto userDto) {
+        Long id = userDto.getId();
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. ID: " + userId));
+
+        user.updateUser(userDto);
+        userRepository.save(user);
+    }
+
+    // 유저 검색 기능
+    // 1. 전체 검색 기능
+    // @Transactional(readOnly = true) -> 트랜잭션 이해하고 사용하자
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    // 2. 이름으로 검색 기능
+    // @Transactional(readOnly = true) -> 트랜잭션 이해하고 사용하자
+    public List<User> findByUsername(String username) {
+        return userRepository.findByUsernameContaining(username);
+    }
+
+
+    // 유저 삭제 기능
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+}
