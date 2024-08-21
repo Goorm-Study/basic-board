@@ -1,15 +1,10 @@
 package study.basic_board.dto;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import study.basic_board.base.BaseTimeEntity;
 import study.basic_board.entity.Board;
-import study.basic_board.entity.User;
 
 import java.time.LocalDateTime;
 
-@Data
 @Getter
 // Response랑 Request 나눠야할 듯?
 // response : 서버에서 클라이언트로 데이터 전송
