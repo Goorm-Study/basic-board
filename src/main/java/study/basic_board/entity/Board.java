@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import study.basic_board.base.BaseTimeEntity;
 import study.basic_board.dto.BoardRequestDto;
 
@@ -25,6 +26,7 @@ public class Board extends BaseTimeEntity {
     private String content;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @BatchSize(size = 600)
     private List<Comment> comments;
     // MappedBy를 위해서 양방향으로 설정함!
 
