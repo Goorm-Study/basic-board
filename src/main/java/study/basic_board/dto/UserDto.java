@@ -3,6 +3,7 @@ package study.basic_board.dto;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import study.basic_board.entity.User;
 
 import java.time.LocalDate;
 
@@ -14,4 +15,12 @@ public class UserDto {
     private String username;
     private LocalDate birth;
     private String nickname;
+
+    // dto로 전환
+    public UserDto(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.birth = user.getBirth();
+        this.nickname = user.getNickname();
+    }
 }

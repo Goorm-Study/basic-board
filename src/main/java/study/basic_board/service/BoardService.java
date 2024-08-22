@@ -7,6 +7,7 @@ import study.basic_board.dto.BoardResponseDto;
 import study.basic_board.entity.Board;
 import study.basic_board.entity.User;
 import study.basic_board.repository.BoardRepository;
+import study.basic_board.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,20 +16,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
 
     // 글 등록
-    public void registerBoard(User user, BoardRequestDto boardDto) {
-        Board board = new Board(user, boardDto);
+    public BoardResponseDto registerBoard(Long boardId, BoardRequestDto BoardRequestDto) {
+        Long userId = BoardRequestDto.getUserId();
+
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
+        );
+
+        Board board = new Board(user, BoardRequestDto);
         boardRepository.save(board);
+        return new BoardResponseDto(board);
     }
 
 
     // 글 전체 검색
     public List<BoardResponseDto> findAllBoards() {
-        List<Board> boards = boardRepository.findAll();
+        List<Board> BoardList = boardRepository.findAll();
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
-        for (Board board : boards) {
+        for (Board board : BoardList) {
             boardResponseDtoList.add(new BoardResponseDto(board));
         }
 
@@ -52,31 +61,40 @@ public class BoardService {
 
 
     // 글 수정 : 현재 접속 유저 & 글 id & dto 정보 이용
-    public void updateBoard(User user, Long id, BoardRequestDto boardRequestDto) {
+    // 권한은 어떻게 체크?
+    public Long updateBoard(Long boardId, BoardRequestDto boardRequestDto) {
+        Long userId = boardRequestDto.getUserId();
+
         // 글 찾기
-        Board board = boardRepository.findById(id).orElseThrow(
+        Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
 
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
+        );
+
+        // 권한을 이렇게 체크?
         if (user.getUsername().equals(board.getUser().getUsername())) {
             board.update(boardRequestDto);
         } else {
             throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
         }
+
+        return board.getId();
     }
 
 
     // 글 삭제
-    public void deleteBoard(User user, Long id) {
+    // 권한은 어떻게 체크?
+    public Long deleteBoard(Long boardId) {
         // 글 찾기
-        Board board = boardRepository.findById(id).orElseThrow(
+        Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
 
-        if (user.getUsername().equals(board.getUser().getUsername())) {
-            boardRepository.delete(board);
-        } else {
-            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
-        }
+        boardRepository.delete(board);
+
+        return board.getId();
     }
 }

@@ -6,6 +6,7 @@ import study.basic_board.dto.UserDto;
 import study.basic_board.entity.User;
 import study.basic_board.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,19 +31,36 @@ public class UserService {
     // 유저 검색 기능
     // 1. 전체 검색 기능
     // @Transactional(readOnly = true) -> 트랜잭션 이해하고 사용하자
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> findAllUsers() {
+        List<User> userList = userRepository.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+
+        for (User user : userList) {
+            userDtoList.add(new UserDto(user));
+        }
+
+        return userDtoList;
     }
 
     // 2. 이름으로 검색 기능
     // @Transactional(readOnly = true) -> 트랜잭션 이해하고 사용하자
-    public List<User> findByUsername(String username) {
-        return userRepository.findByUsernameContaining(username);
+    public List<UserDto> findByUsername(String username) {
+        List<User> userList = userRepository.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+
+        // 질문 : 굳이 이렇게 하나하나 dto로 전환해야하나?
+        for (User user : userList) {
+            if (user.getUsername().contains(username)) {
+                userDtoList.add(new UserDto(user));
+            }
+        }
+
+        return userDtoList;
     }
 
 
     // 유저 정보 수정 구현
-    public void updateUser(UserDto userDto) {
+    public Long updateUser(UserDto userDto) {
         Long id = userDto.getId();
 
         User user = userRepository.findById(id)
@@ -50,11 +68,14 @@ public class UserService {
 
         user.updateUser(userDto);
         userRepository.save(user);
+
+        return id;
     }
 
 
     // 유저 삭제 기능
-    public void deleteUser(Long id) {
+    public Long deleteUser(Long id) {
         userRepository.deleteById(id);
+        return id;
     }
 }
