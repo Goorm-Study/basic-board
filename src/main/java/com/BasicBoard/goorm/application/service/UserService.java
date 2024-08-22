@@ -5,18 +5,21 @@ import com.BasicBoard.goorm.entity.User;
 import com.BasicBoard.goorm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
 
     // register user
-    public void RegisterUser(UserDto userDto) {
+    @Transactional
+    public void registerUser(UserDto.Register userDto) {
         // nickname duplicate check
         if (userRepository.existsByNickname(userDto.getNickname())) {
             throw new IllegalArgumentException("nickname already exists. nickname should be unique");
@@ -47,8 +50,15 @@ public class UserService {
     }
 
     // updateUser
-    // 닉네임을 변경?
-    public void updateUser(UserDto dto) {
+    @Transactional
+    public void updateUser(UserDto.Update updateDto) {
+        User user = userRepository.findById(updateDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("회원정보 없음"));
+        user.updateUser(updateDto);
+    }
+
+    @Transactional
+    public void deleteUser(UserDto.Delete deleteDto) {
+        userRepository.deleteById(deleteDto.getUserId());
     }
 
 }

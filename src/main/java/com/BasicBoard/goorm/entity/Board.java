@@ -2,6 +2,7 @@ package com.BasicBoard.goorm.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,4 +30,11 @@ public class Board extends BaseTimeEntity{
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     Collection<Comment> comments;
+
+    @Builder
+    public Board(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        this.user = user;
+    }
 }

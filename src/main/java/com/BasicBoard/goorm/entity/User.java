@@ -1,5 +1,6 @@
 package com.BasicBoard.goorm.entity;
 
+import com.BasicBoard.goorm.application.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -38,5 +39,11 @@ public class User extends BaseTimeEntity {
         this.username = username;
         this.nickname = nickname;
         this.birth = birth;
+    }
+
+    public void updateUser(UserDto.Update userDto) {
+        this.username = userDto.getUsername();
+        this.nickname = userDto.getNickname();
+        this.birth = userDto.getBirth();
     }
 }
