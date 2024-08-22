@@ -1,5 +1,7 @@
 package study.basic_board.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import study.basic_board.entity.User;
@@ -12,8 +14,14 @@ import java.time.LocalDate;
 public class UserDto {
 
     private Long id;
+
+    @NotBlank(message = "사용자 이름은 필수입니다.")
     private String username;
+
+    @NotNull(message = "생년월일은 필수입니다.")
     private LocalDate birth;
+
+    @NotBlank(message = "닉네임은 필수입니다.")
     private String nickname;
 
     public static UserDto of(User user) {
