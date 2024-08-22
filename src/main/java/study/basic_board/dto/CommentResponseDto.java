@@ -7,9 +7,9 @@ import study.basic_board.entity.Comment;
 
 import java.time.LocalDateTime;
 
-@Data
 @Getter
 public class CommentResponseDto {
+    private Long id;
     private String username;
     private String content;
     private LocalDateTime createTime;

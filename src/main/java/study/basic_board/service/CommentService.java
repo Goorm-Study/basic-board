@@ -8,7 +8,9 @@ import study.basic_board.dto.CommentResponseDto;
 import study.basic_board.entity.Board;
 import study.basic_board.entity.Comment;
 import study.basic_board.entity.User;
+import study.basic_board.repository.BoardRepository;
 import study.basic_board.repository.CommentRepository;
+import study.basic_board.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,22 +19,44 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     // 댓글 등록
-    public void registerComment(Board board, User user, CommentRequestDto commentRequestDto) {
+    public CommentResponseDto registerComment(Long boardId, CommentRequestDto commentRequestDto) {
+        Long userId = commentRequestDto.getUserId();
+
+        // repo에서 글 찾기
+        Board board = boardRepository.findById(boardId).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
+        );
+
+        // repo에서 사용자 찾기
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
+        );
+
+
         Comment comment = new Comment(board, user, commentRequestDto);
         commentRepository.save(comment);
+
+        return new CommentResponseDto(comment);
     }
 
     // 댓글 읽어오기
+    // 여기도 트랜잭션?
+    // 여기도 페이징 기술 적용하기
     public List<CommentResponseDto> findCommentsByBoardId(Long boardId) {
-        List<Comment> CommentList = commentRepository.findAll();
+        // 글 찾기
+        Board board = boardRepository.findById(boardId).orElseThrow(
+                () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
+        );
+
+        List<Comment> CommentList = board.getComments();
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
         for (Comment comment : CommentList) {
-            if (comment.getBoard().getId().equals(boardId)) {
                 commentResponseDtoList.add(new CommentResponseDto(comment));
-            }
         }
 
         return commentResponseDtoList;
@@ -40,30 +64,25 @@ public class CommentService {
     }
 
     // 댓글 수정
-    public void updateBoard(User user, CommentRequestDto commentRequestDto) {
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto commentRequestDto) {
         // 댓글 찾기
-        Comment comment = commentRepository.findById(commentRequestDto.getCommentId()).orElseThrow(
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
 
-        if (user.equals(comment.getUser())) {
-            comment.update(commentRequestDto);
-        } else {
-            throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
-        }
+        comment.update(commentRequestDto);
+        return new CommentResponseDto(comment);
     }
 
     // 댓글 삭제
-    public void deleteComment(User user, Long commentId) {
+    public Long deleteComment(Long commentId) {
         // repo에서 댓글 찾기
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
 
-        if (user.equals(comment.getUser())) {
-            commentRepository.delete(comment);
-        } else {
-            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
-        }
+        commentRepository.delete(comment);
+
+        return comment.getId();
     }
 }

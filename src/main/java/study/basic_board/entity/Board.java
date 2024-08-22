@@ -33,7 +33,6 @@ public class Board extends BaseTimeEntity {
     private User user;
 
 
-
     // 글 등록할 때 쓰는 생성자
     public Board(User user, BoardRequestDto boardRequestDto) {
         this.title = boardRequestDto.getTitle();

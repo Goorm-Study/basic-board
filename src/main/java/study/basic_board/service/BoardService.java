@@ -34,9 +34,15 @@ public class BoardService {
 
 
     // 글 전체 검색
+    // repository에서 쿼리 작성하거나, 페이징 기술 사용할 것!!
+    // 다른 메서드들도 체크,
+    // 그리고 max도 설정할 것! List 초과 방지
     public List<BoardResponseDto> findAllBoards() {
         List<Board> BoardList = boardRepository.findAll();
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
+
+
+        // 이런거 Repository에서 dto로 데이터 형식 변경할 수 있음.
         for (Board board : BoardList) {
             boardResponseDtoList.add(new BoardResponseDto(board));
         }

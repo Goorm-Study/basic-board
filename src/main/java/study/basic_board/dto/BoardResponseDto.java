@@ -9,11 +9,11 @@ import study.basic_board.entity.User;
 
 import java.time.LocalDateTime;
 
-@Data
 @Getter
 // Response랑 Request 나눠야할 듯?
 // response : 서버에서 클라이언트로 데이터 전송
 public class BoardResponseDto {
+    private Long id;
     private String username;
     private String title;
     private String content;

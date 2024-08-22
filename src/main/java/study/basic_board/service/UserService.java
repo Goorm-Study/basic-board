@@ -2,6 +2,7 @@ package study.basic_board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import study.basic_board.dto.UserDto;
 import study.basic_board.entity.User;
 import study.basic_board.repository.UserRepository;
@@ -30,7 +31,7 @@ public class UserService {
 
     // 유저 검색 기능
     // 1. 전체 검색 기능
-    // @Transactional(readOnly = true) -> 트랜잭션 이해하고 사용하자
+    @Transactional(readOnly = true) // -> 트랜잭션 이해하고 사용하자
     public List<UserDto> findAllUsers() {
         List<User> userList = userRepository.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
@@ -43,7 +44,7 @@ public class UserService {
     }
 
     // 2. 이름으로 검색 기능
-    // @Transactional(readOnly = true) -> 트랜잭션 이해하고 사용하자
+    @Transactional(readOnly = true) // -> 트랜잭션 이해하고 사용하자
     public List<UserDto> findByUsername(String username) {
         List<User> userList = userRepository.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
