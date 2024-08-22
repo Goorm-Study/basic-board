@@ -1,7 +1,6 @@
-package study.basic_board.dto;
+package study.basic_board.dto.comment;
 
 
-import lombok.Data;
 import lombok.Getter;
 import study.basic_board.entity.Comment;
 

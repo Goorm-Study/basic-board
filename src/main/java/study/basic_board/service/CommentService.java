@@ -3,8 +3,10 @@ package study.basic_board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import study.basic_board.dto.CommentRequestDto;
-import study.basic_board.dto.CommentResponseDto;
+import org.springframework.transaction.annotation.Transactional;
+import study.basic_board.dto.comment.CommentCreateRequestDto;
+import study.basic_board.dto.comment.CommentResponseDto;
+import study.basic_board.dto.comment.CommentUpdateRequestDto;
 import study.basic_board.entity.Board;
 import study.basic_board.entity.Comment;
 import study.basic_board.entity.User;
@@ -23,8 +25,8 @@ public class CommentService {
     private final UserRepository userRepository;
 
     // 댓글 등록
-    public CommentResponseDto registerComment(Long boardId, CommentRequestDto commentRequestDto) {
-        Long userId = commentRequestDto.getUserId();
+    public CommentResponseDto registerComment(Long boardId, CommentCreateRequestDto commentCreateRequestDto) {
+        Long userId = commentCreateRequestDto.getUserId();
 
         // repo에서 글 찾기
         Board board = boardRepository.findById(boardId).orElseThrow(
@@ -37,7 +39,7 @@ public class CommentService {
         );
 
 
-        Comment comment = new Comment(board, user, commentRequestDto);
+        Comment comment = new Comment(board, user, commentCreateRequestDto);
         commentRepository.save(comment);
 
         return new CommentResponseDto(comment);
@@ -46,6 +48,7 @@ public class CommentService {
     // 댓글 읽어오기
     // 여기도 트랜잭션?
     // 여기도 페이징 기술 적용하기
+    @Transactional(readOnly = true)
     public List<CommentResponseDto> findCommentsByBoardId(Long boardId) {
         // 글 찾기
         Board board = boardRepository.findById(boardId).orElseThrow(
@@ -64,13 +67,13 @@ public class CommentService {
     }
 
     // 댓글 수정
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto commentRequestDto) {
+    public CommentResponseDto updateComment(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto) {
         // 댓글 찾기
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
 
-        comment.update(commentRequestDto);
+        comment.update(commentUpdateRequestDto);
         return new CommentResponseDto(comment);
     }
 

@@ -2,8 +2,8 @@ package study.basic_board.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import study.basic_board.dto.BoardRequestDto;
-import study.basic_board.dto.BoardResponseDto;
+import study.basic_board.dto.board.BoardUpdateRequestDto;
+import study.basic_board.dto.board.BoardResponseDto;
 import study.basic_board.service.BoardService;
 
 import java.util.List;
@@ -15,8 +15,8 @@ public class BoardController {
 
     // 글 등록
     @PostMapping("/boards/{id}")
-    public BoardResponseDto registerBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto) {
-        BoardResponseDto dto = boardService.registerBoard(id, boardRequestDto);
+    public BoardResponseDto registerBoard(@PathVariable Long id, @RequestBody BoardUpdateRequestDto boardUpdateRequestDto) {
+        BoardResponseDto dto = boardService.registerBoard(id, boardUpdateRequestDto);
         return dto;
     }
 
@@ -34,8 +34,8 @@ public class BoardController {
 
     // 글 수정
     @PutMapping("/boards/{id}")
-    public Long updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto) {
-        return boardService.updateBoard(id, boardRequestDto);
+    public Long updateBoard(@PathVariable Long id, @RequestBody BoardUpdateRequestDto boardUpdateRequestDto) {
+        return boardService.updateBoard(id, boardUpdateRequestDto);
     }
 
     // 글 삭제

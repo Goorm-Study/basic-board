@@ -2,7 +2,7 @@ package study.basic_board.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import study.basic_board.dto.UserDto;
+import study.basic_board.dto.user.UserDto;
 import study.basic_board.service.UserService;
 
 import java.util.List;

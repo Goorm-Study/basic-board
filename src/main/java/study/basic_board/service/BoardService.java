@@ -2,8 +2,10 @@ package study.basic_board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import study.basic_board.dto.BoardRequestDto;
-import study.basic_board.dto.BoardResponseDto;
+import org.springframework.transaction.annotation.Transactional;
+import study.basic_board.dto.board.BoardCreateRequestDto;
+import study.basic_board.dto.board.BoardUpdateRequestDto;
+import study.basic_board.dto.board.BoardResponseDto;
 import study.basic_board.entity.Board;
 import study.basic_board.entity.User;
 import study.basic_board.repository.BoardRepository;
@@ -20,14 +22,14 @@ public class BoardService {
 
 
     // 글 등록
-    public BoardResponseDto registerBoard(Long boardId, BoardRequestDto BoardRequestDto) {
-        Long userId = BoardRequestDto.getUserId();
+    public BoardResponseDto registerBoard(Long boardId, BoardCreateRequestDto boardCreateRequestDto) {
+        Long userId = boardCreateRequestDto.getUserId();
 
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
         );
 
-        Board board = new Board(user, BoardRequestDto);
+        Board board = new Board(user, boardCreateRequestDto);
         boardRepository.save(board);
         return new BoardResponseDto(board);
     }
@@ -37,10 +39,10 @@ public class BoardService {
     // repository에서 쿼리 작성하거나, 페이징 기술 사용할 것!!
     // 다른 메서드들도 체크,
     // 그리고 max도 설정할 것! List 초과 방지
+    @Transactional(readOnly = true)
     public List<BoardResponseDto> findAllBoards() {
         List<Board> BoardList = boardRepository.findAll();
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
-
 
         // 이런거 Repository에서 dto로 데이터 형식 변경할 수 있음.
         for (Board board : BoardList) {
@@ -51,6 +53,7 @@ public class BoardService {
     }
 
     // 글 제목으로 검색
+    @Transactional(readOnly = true)
     public List<BoardResponseDto> findBoardsByTitle(String title) {
         List<Board> BoardList = boardRepository.findAll();
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
@@ -68,8 +71,8 @@ public class BoardService {
 
     // 글 수정 : 현재 접속 유저 & 글 id & dto 정보 이용
     // 권한은 어떻게 체크?
-    public Long updateBoard(Long boardId, BoardRequestDto boardRequestDto) {
-        Long userId = boardRequestDto.getUserId();
+    public Long updateBoard(Long boardId, BoardUpdateRequestDto boardUpdateRequestDto) {
+        Long userId = boardUpdateRequestDto.getUserId();
 
         // 글 찾기
         Board board = boardRepository.findById(boardId).orElseThrow(
@@ -82,7 +85,7 @@ public class BoardService {
 
         // 권한을 이렇게 체크?
         if (user.getUsername().equals(board.getUser().getUsername())) {
-            board.update(boardRequestDto);
+            board.update(boardUpdateRequestDto);
         } else {
             throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
         }

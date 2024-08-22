@@ -3,7 +3,7 @@ package study.basic_board.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.basic_board.dto.UserDto;
+import study.basic_board.dto.user.UserDto;
 import study.basic_board.entity.User;
 import study.basic_board.repository.UserRepository;
 
@@ -50,6 +50,7 @@ public class UserService {
         List<UserDto> userDtoList = new ArrayList<>();
 
         // 질문 : 굳이 이렇게 하나하나 dto로 전환해야하나?
+        // 답 : repo에서 JPQL 구현하는게 맞음. 이렇게 하면 유지보수가 어려워지기 때문
         for (User user : userList) {
             if (user.getUsername().contains(username)) {
                 userDtoList.add(new UserDto(user));

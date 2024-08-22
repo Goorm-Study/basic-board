@@ -1,8 +1,6 @@
-package study.basic_board.dto;
+package study.basic_board.dto.user;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 import study.basic_board.entity.User;
 
 import java.time.LocalDate;

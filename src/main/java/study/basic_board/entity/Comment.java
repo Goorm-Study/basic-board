@@ -3,11 +3,9 @@ package study.basic_board.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import study.basic_board.base.BaseTimeEntity;
-import study.basic_board.dto.CommentRequestDto;
-
-import java.time.LocalDateTime;
+import study.basic_board.dto.comment.CommentCreateRequestDto;
+import study.basic_board.dto.comment.CommentUpdateRequestDto;
 
 @Entity
 @Getter
@@ -31,14 +29,14 @@ public class Comment extends BaseTimeEntity {
     private Board board;
 
     // 댓글 등록할 때 쓰는 생성자
-    public Comment(Board board, User user, CommentRequestDto commentRequestDto) {
+    public Comment(Board board, User user, CommentCreateRequestDto commentCreateRequestDto) {
         this.user = user;
-        this.content = commentRequestDto.getContent();
+        this.content = commentCreateRequestDto.getContent();
         this.board = board;
     }
 
     // 댓글 수정할 때 쓰는 생성자
-    public void update(CommentRequestDto commentRequestDto) {
-        this.content = commentRequestDto.getContent();
+    public void update(CommentUpdateRequestDto commentUpdateRequestDto) {
+        this.content = commentUpdateRequestDto.getContent();
     }
 }
