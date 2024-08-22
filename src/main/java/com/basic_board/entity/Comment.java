@@ -35,6 +35,6 @@ public class Comment extends BaseEntity{
 
     // 댓글 수정 메서드
     public void updateContent(String content) {
-        this.content = content;
+       this.content = content;
     }
 }
