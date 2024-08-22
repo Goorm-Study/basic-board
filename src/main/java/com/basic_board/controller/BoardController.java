@@ -17,7 +17,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping("/boards")
-    public ResponseEntity<Board> addBoard(BoardDto boardDto) {
+    public ResponseEntity<Board> createBoard(BoardDto boardDto) {
         Board savedBoard = boardService.save(boardDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)

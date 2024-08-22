@@ -13,9 +13,9 @@ public class BoardDto {
 
     private String title;
     private String content;
-    private User user;
+    private Long userId;  // User 객체 대신 userId
 
-    public Board toEntity() {
+    public Board toEntity(User user) {  // User를 별도로 서비스에서 조회
         return Board.builder()
                 .title(title)
                 .content(content)
@@ -23,3 +23,5 @@ public class BoardDto {
                 .build();
     }
 }
+
+

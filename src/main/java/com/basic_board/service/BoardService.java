@@ -14,10 +14,10 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    //게시판 글 추가
-    public Board save(BoardDto boardDto) {
-        return boardRepository.save(boardDto.toEntity());
-    }
+    //BoardDto 수정 후 추가 예정
+//    public Board save(BoardDto boardDto) {
+//        return boardRepository.save(boardDto.toEntity());
+//    }
 
 //    public Board getBoardById(Long id) {
 //        return boardRepository.findById(id)
