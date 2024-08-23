@@ -39,6 +39,7 @@ public class CommentDto {
         private String content;
         private Long boardId;
         private Long userId;
+        private String username;
 
         public static Response fromEntity(Comment comment) {
             return Response.builder()
@@ -46,6 +47,7 @@ public class CommentDto {
                     .content(comment.getContent())
                     .boardId(comment.getBoard().getBoardId())
                     .userId(comment.getUser().getUserId())
+                    .username(comment.getUser().getUsername())
                     .build();
         }
     }

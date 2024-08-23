@@ -37,7 +37,8 @@ public class BoardDto {
         private Long boardId;  // 게시판 ID
         private String title;
         private String content;
-        private Long userId;   // User의 ID만 반환
+        private Long userId; // User의 ID
+        private String username;
 
         public static Response fromEntity(Board board) {
             return Response.builder()
@@ -45,6 +46,7 @@ public class BoardDto {
                     .title(board.getTitle())
                     .content(board.getContent())
                     .userId(board.getUser().getUserId())
+                    .username(board.getUser().getUsername())
                     .build();
         }
     }
