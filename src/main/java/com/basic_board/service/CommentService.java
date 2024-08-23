@@ -7,10 +7,9 @@ import com.basic_board.entity.User;
 import com.basic_board.repository.BoardRepository;
 import com.basic_board.repository.CommentRepository;
 import com.basic_board.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +35,7 @@ public class CommentService {
     }
 
     // 댓글 조회 (ID로 조회)
+    @Transactional(readOnly = true)
     public CommentDto.Response getCommentById(Long id) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comment not found with id " + id));
@@ -43,6 +43,7 @@ public class CommentService {
     }
 
     // 모든 댓글 조회
+    @Transactional(readOnly = true)
     public List<CommentDto.Response> getAllComments() {
         return commentRepository.findAll().stream()
                 .map(CommentDto.Response::fromEntity)
