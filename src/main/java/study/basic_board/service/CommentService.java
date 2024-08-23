@@ -25,6 +25,7 @@ public class CommentService {
     private final UserRepository userRepository;
 
     // 댓글 등록
+    @Transactional
     public CommentResponseDto registerComment(Long boardId, CommentCreateRequestDto commentCreateRequestDto) {
         Long userId = commentCreateRequestDto.getUserId();
 
@@ -67,6 +68,7 @@ public class CommentService {
     }
 
     // 댓글 수정
+    @Transactional
     public CommentResponseDto updateComment(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto) {
         // 댓글 찾기
         Comment comment = commentRepository.findById(commentId).orElseThrow(
@@ -78,6 +80,7 @@ public class CommentService {
     }
 
     // 댓글 삭제
+    @Transactional
     public Long deleteComment(Long commentId) {
         // repo에서 댓글 찾기
         Comment comment = commentRepository.findById(commentId).orElseThrow(

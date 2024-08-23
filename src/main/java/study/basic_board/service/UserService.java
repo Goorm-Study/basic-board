@@ -17,13 +17,20 @@ public class UserService {
 
     // id 중복 확인
     // 유저 등록 구현
+    @Transactional
     public UserDto registerUser(UserDto userDto) {
         // 닉네임 중복되면 에러
-        if (!userRepository.existsByNickname(userDto.getNickname())) {
+        if (userRepository.existsByNickname(userDto.getNickname())) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
         }
 
-        User user = new User(userDto);
+        User user = User.builder()
+                .id(userDto.getId())
+                .username(userDto.getUsername())
+                .birth(userDto.getBirth())
+                .nickname(userDto.getNickname())
+                .build();
+
         userRepository.save(user);
         return userDto;
     }
@@ -60,22 +67,32 @@ public class UserService {
         return userDtoList;
     }
 
+/*
+    Update 메서드와 관련하여...
+    <gpt의 의견>
+    **엔티티 재생성 대신 기존 엔티티 사용**
+    현재 코드에서는 userId를 기반으로 새로운 user 객체를 빌더 패턴으로 생성하고 있습니다. 그러나, 이 방법은 효율적이지 않으며, 데이터베이스의 다른 필드가 유지되지 않을 수 있는 문제가 있습니다.
+    기존 엔티티를 로드한 후 그 엔티티의 필드만 업데이트하는 것이 더 적절합니다. 이렇게 하면 엔티티의 나머지 필드가 유지되고, JPA의 더 나은 변경 추적 기능을 활용할 수 있습니다.
+*/
 
     // 유저 정보 수정 구현
+    @Transactional
     public Long updateUser(UserDto userDto) {
         Long id = userDto.getId();
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. ID: " + id));
 
-        user.updateUser(userDto);
-        userRepository.save(user);
+        user.update(userDto);
+
+        // userRepository.save(user);  // 필요 없음, JPA가 자동으로 변경사항을 반영
 
         return id;
     }
 
 
     // 유저 삭제 기능
+    @Transactional
     public Long deleteUser(Long id) {
         userRepository.deleteById(id);
         return id;

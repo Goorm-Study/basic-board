@@ -22,14 +22,19 @@ public class BoardService {
 
 
     // 글 등록
-    public BoardResponseDto registerBoard(Long boardId, BoardCreateRequestDto boardCreateRequestDto) {
+    @Transactional
+    public BoardResponseDto registerBoard(BoardCreateRequestDto boardCreateRequestDto) {
         Long userId = boardCreateRequestDto.getUserId();
 
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
         );
 
-        Board board = new Board(user, boardCreateRequestDto);
+        Board board = Board.builder()
+                .title(boardCreateRequestDto.getTitle())
+                .content(boardCreateRequestDto.getContent())
+                .user(user).build();
+
         boardRepository.save(board);
         return new BoardResponseDto(board);
     }
@@ -69,26 +74,29 @@ public class BoardService {
     }
 
 
+/*
+    Update 메서드와 관련하여...
+    <gpt의 의견>
+    **엔티티 재생성 대신 기존 엔티티 사용**
+    현재 코드에서는 boardId 기반으로 새로운 board 객체를 빌더 패턴으로 생성하고 있습니다. 그러나, 이 방법은 효율적이지 않으며, 데이터베이스의 다른 필드가 유지되지 않을 수 있는 문제가 있습니다.
+    기존 엔티티를 로드한 후 그 엔티티의 필드만 업데이트하는 것이 더 적절합니다. 이렇게 하면 엔티티의 나머지 필드가 유지되고, JPA의 더 나은 변경 추적 기능을 활용할 수 있습니다.
+*/
+
     // 글 수정 : 현재 접속 유저 & 글 id & dto 정보 이용
     // 권한은 어떻게 체크?
+    @Transactional
     public Long updateBoard(Long boardId, BoardUpdateRequestDto boardUpdateRequestDto) {
-        Long userId = boardUpdateRequestDto.getUserId();
 
-        // 글 찾기
-        Board board = boardRepository.findById(boardId).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
-        );
+        // 게시물이 존재하는지 체크
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다. ID: " + boardId));
 
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
-        );
-
-        // 권한을 이렇게 체크?
-        if (user.getUsername().equals(board.getUser().getUsername())) {
-            board.update(boardUpdateRequestDto);
-        } else {
-            throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
+        // 제목은 null이면 안되니까
+        if (boardUpdateRequestDto.getTitle() == null || boardUpdateRequestDto.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("제목은 비어 있을 수 없습니다.");
         }
+
+        board.update(boardUpdateRequestDto);
 
         return board.getId();
     }
@@ -96,6 +104,7 @@ public class BoardService {
 
     // 글 삭제
     // 권한은 어떻게 체크?
+    @Transactional
     public Long deleteBoard(Long boardId) {
         // 글 찾기
         Board board = boardRepository.findById(boardId).orElseThrow(

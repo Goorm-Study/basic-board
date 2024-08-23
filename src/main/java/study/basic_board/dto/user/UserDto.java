@@ -13,6 +13,9 @@ public class UserDto {
     private LocalDate birth;
     private String nickname;
 
+    // 기본 생성자
+    public UserDto() {}
+
     // dto로 전환
     public UserDto(User user) {
         this.id = user.getId();
@@ -21,3 +24,6 @@ public class UserDto {
         this.nickname = user.getNickname();
     }
 }
+
+// 서비스 단위로
+//

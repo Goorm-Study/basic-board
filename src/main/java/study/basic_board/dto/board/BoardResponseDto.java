@@ -20,9 +20,9 @@ public class BoardResponseDto {
     // board의 정보를 이용하여 dto 생성하는 생성자
     public BoardResponseDto(Board board) {
         this.username = board.getUser().getUsername();
-        this.title = title;
-        this.content = content;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+        this.title = board.getTitle();
+        this.content = board.getContent();
+        this.createTime = board.getCreateTime();
+        this.updateTime = board.getUpdateTime();
     }
 }
