@@ -1,6 +1,9 @@
 package study.basic_board.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.basic_board.dto.board.BoardCreateRequestDto;
@@ -45,8 +48,16 @@ public class BoardService {
     // 다른 메서드들도 체크,
     // 그리고 max도 설정할 것! List 초과 방지
     @Transactional(readOnly = true)
-    public List<BoardResponseDto> findAllBoards() {
-        List<Board> BoardList = boardRepository.findAll();
+    public List<BoardResponseDto> findAllBoards(Pageable pageable) {
+/*
+        // 생성 시간 기준 정렬 (내림차순 desc)
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        // getContent()은 List로 반환해주기 위함
+        List<Board> BoardList = boardRepository.findAll(pageRequest).getContent();
+*/
+        // pageable 자체를 받는 것이 findAll 입장에서도 깔끔함
+        List<Board> BoardList = boardRepository.findAll(pageable).getContent();
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
 
         // 이런거 Repository에서 dto로 데이터 형식 변경할 수 있음.
@@ -59,8 +70,8 @@ public class BoardService {
 
     // 글 제목으로 검색
     @Transactional(readOnly = true)
-    public List<BoardResponseDto> findBoardsByTitle(String title) {
-        List<Board> BoardList = boardRepository.findAll();
+    public List<BoardResponseDto> findBoardsByTitle(String title, Pageable pageable) {
+        List<Board> BoardList = boardRepository.findAll(pageable).getContent();
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
 
         for (Board board : BoardList) {

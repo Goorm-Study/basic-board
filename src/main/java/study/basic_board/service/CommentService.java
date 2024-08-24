@@ -2,6 +2,7 @@ package study.basic_board.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.basic_board.dto.comment.CommentCreateRequestDto;
@@ -50,16 +51,23 @@ public class CommentService {
     // 여기도 트랜잭션?
     // 여기도 페이징 기술 적용하기
     @Transactional(readOnly = true)
-    public List<CommentResponseDto> findCommentsByBoardId(Long boardId) {
+    public List<CommentResponseDto> findCommentsByBoardId(Long boardId, Pageable pageable) {
         // 글 찾기
         Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
 
         List<Comment> CommentList = board.getComments();
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-        for (Comment comment : CommentList) {
+        // 댓글 기능의 경우, 먼저 게시글의 id로 게시글을 찾아서, 그 게시글에 들어있는 댓글을
+        // 확인하는 구조이기 때문에, 이렇게 수동적으로 구현했습니다.
+        // repository에서 수많은 댓글들을 검색하게되는 것은 너무 비효율적이라고 생각했습니다.
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), CommentList.size());
+        List<Comment> paginatedList = CommentList.subList(start, end);
+
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        for (Comment comment : paginatedList) {
                 commentResponseDtoList.add(new CommentResponseDto(comment));
         }
 

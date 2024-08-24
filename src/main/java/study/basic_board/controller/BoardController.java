@@ -1,6 +1,7 @@
 package study.basic_board.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import study.basic_board.dto.board.BoardCreateRequestDto;
 import study.basic_board.dto.board.BoardUpdateRequestDto;
@@ -23,14 +24,16 @@ public class BoardController {
 
     // 글 전체 검색
     @GetMapping("/boards")
-    public List<BoardResponseDto> getAllBoards() {
-        return boardService.findAllBoards();
+    // PageRequest를 컨트롤러에서 전달받는 것이 좋다.
+    // 다른 정렬 조건을 붙이고 싶으면 서비스에 메서드를 새로 추가해야되는 구조이기 때문이다.
+    public List<BoardResponseDto> findAllBoards(final Pageable pageable) {
+        return boardService.findAllBoards(pageable);
     }
 
     // 글 제목으로 검색
     @GetMapping("/boards/{title}")
-    public List<BoardResponseDto> getBoardsByTitle(@PathVariable String title) {
-        return boardService.findBoardsByTitle(title);
+    public List<BoardResponseDto> findBoardsByTitle(@PathVariable String title, final Pageable pageable) {
+        return boardService.findBoardsByTitle(title,pageable);
     }
 
     // 글 수정

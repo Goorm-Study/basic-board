@@ -1,6 +1,8 @@
 package study.basic_board.controller;
 
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import study.basic_board.dto.comment.CommentCreateRequestDto;
 import study.basic_board.dto.comment.CommentResponseDto;
@@ -10,9 +12,9 @@ import study.basic_board.service.CommentService;
 import java.util.List;
 
 @RestController
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class CommentController {
-    private CommentService commentService;
+    private final CommentService commentService;
 
     // 댓글 등록
     @PostMapping("/boards/{id}/comments")
@@ -22,8 +24,8 @@ public class CommentController {
 
     // 댓글 조회
     @GetMapping("/boards/{id}/comments")
-    public List<CommentResponseDto> findCommentsByBoardId(@PathVariable Long boardId) {
-        return commentService.findCommentsByBoardId(boardId);
+    public List<CommentResponseDto> findCommentsByBoardId(@PathVariable Long id, final Pageable pageable) {
+        return commentService.findCommentsByBoardId(id, pageable);
     }
 
     // 댓글 수정

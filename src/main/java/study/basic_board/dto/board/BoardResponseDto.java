@@ -19,6 +19,7 @@ public class BoardResponseDto {
 
     // board의 정보를 이용하여 dto 생성하는 생성자
     public BoardResponseDto(Board board) {
+        this.id = board.getId();
         this.username = board.getUser().getUsername();
         this.title = board.getTitle();
         this.content = board.getContent();
