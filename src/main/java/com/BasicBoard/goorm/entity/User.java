@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -28,6 +29,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String nickname;
 
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<Board> boards;
 
