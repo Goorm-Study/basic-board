@@ -81,8 +81,16 @@ public class BoardService {
     }
 
     // Page<Board> to Page<BoardDto.ReadResponse>
-
     public static Page<BoardDto.ReadResponse> toDtoList(Page<Board> boardList) {
         return boardList.map(BoardDto.ReadResponse::toDto);
+    }
+
+    // update Board
+    public BoardDto.Update updateBoard(BoardDto.Update boardDto) {
+        Board board = boardRepository.findById(boardDto.getBoardId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글"));
+        board.updateBoard(boardDto);
+        boardRepository.save(board);
+
+        return boardDto;
     }
 }

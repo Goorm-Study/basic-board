@@ -65,19 +65,16 @@ public class UserService {
     }
 
     // updateUser
-
     public void updateUser(UserDto.Update updateDto) {
         User user = userRepository.findById(updateDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("회원정보 없음"));
-
         try {
             user.updateUser(updateDto);
         } catch (Exception e) {
             throw new DataIntegrityViolationException("nickname already exists", e);
 
         }
-
-
     }
+
 
     public void deleteUser(UserDto.Delete deleteDto) {
         userRepository.deleteById(deleteDto.getUserId());

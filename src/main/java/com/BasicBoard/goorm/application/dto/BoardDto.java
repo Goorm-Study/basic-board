@@ -15,6 +15,13 @@ public class BoardDto {
     }
 
     @Getter
+    public static class Update {
+        private Long boardId;
+        private String title;
+        private String content;
+    }
+
+    @Getter
     @Builder
     public static class ReadResponse {
         private Long boardId;

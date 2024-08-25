@@ -2,6 +2,7 @@ package com.BasicBoard.goorm.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,10 @@ public class Comment extends BaseTimeEntity{
     @JoinColumn(name = "boardId")
     private Board board;
 
+    @Builder
+    public Comment(String content, User user, Board board) {
+        this.content = content;
+        this.user = user;
+        this.board = board;
+    }
 }

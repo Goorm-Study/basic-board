@@ -1,10 +1,12 @@
 package com.BasicBoard.goorm.entity;
 
+import com.BasicBoard.goorm.application.dto.BoardDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.Collection;
 
@@ -28,6 +30,7 @@ public class Board extends BaseTimeEntity{
     @JoinColumn(name = "userId")
     private User user;
 
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     Collection<Comment> comments;
 
@@ -36,5 +39,10 @@ public class Board extends BaseTimeEntity{
         this.title = title;
         this.content = content;
         this.user = user;
+    }
+
+    public void updateBoard(BoardDto.Update boardDto) {
+        this.title = boardDto.getTitle();
+        this.content = boardDto.getContent();
     }
 }

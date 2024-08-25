@@ -50,8 +50,18 @@ public class BoardController {
 
     }
 
+    // 게시글 수정
+    @PutMapping("/manage/post/{boardId}")
+    public ResponseEntity<?> updateBoard(@PathVariable("boardId") long boardId,
+                                         @RequestBody BoardDto.Update boardDto) {
+
+        boardService.updateBoard(boardDto);
+        return ResponseEntity.ok(boardDto);
+    }
+
+
     // 게시글 삭제
-    @DeleteMapping("/{boardId}/delete")
+    @DeleteMapping("/manage/post/{boardId}")
     public ResponseEntity<?> deleteBoard(@PathVariable("boardId") long boardId) {
         boardService.deleteBoard(boardId);
         return ResponseEntity.ok(boardId);
