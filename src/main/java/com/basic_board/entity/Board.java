@@ -32,7 +32,6 @@ public class Board extends BaseEntity{
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     List<Comment> comments;
 
-
     @Builder
     public Board(String title, String content, User user) {
         this.title = title;
