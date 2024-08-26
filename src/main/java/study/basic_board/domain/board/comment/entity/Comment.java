@@ -1,11 +1,13 @@
-package study.basic_board.entity;
+package study.basic_board.domain.board.comment.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import study.basic_board.base.BaseTimeEntity;
-import study.basic_board.dto.comment.CommentCreateRequestDto;
-import study.basic_board.dto.comment.CommentUpdateRequestDto;
+import study.basic_board.domain.base.BaseTimeEntity;
+import study.basic_board.domain.board.entity.Board;
+import study.basic_board.domain.user.entity.User;
+import study.basic_board.domain.board.comment.dto.CommentCreateRequestDto;
+import study.basic_board.domain.board.comment.dto.CommentUpdateRequestDto;
 
 @Entity
 @Getter

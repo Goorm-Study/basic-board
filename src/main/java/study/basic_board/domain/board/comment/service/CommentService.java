@@ -1,18 +1,18 @@
-package study.basic_board.service;
+package study.basic_board.domain.board.comment.service;
 
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.basic_board.dto.comment.CommentCreateRequestDto;
-import study.basic_board.dto.comment.CommentResponseDto;
-import study.basic_board.dto.comment.CommentUpdateRequestDto;
-import study.basic_board.entity.Board;
-import study.basic_board.entity.Comment;
-import study.basic_board.entity.User;
-import study.basic_board.repository.BoardRepository;
-import study.basic_board.repository.CommentRepository;
-import study.basic_board.repository.UserRepository;
+import study.basic_board.domain.board.comment.dto.CommentCreateRequestDto;
+import study.basic_board.domain.board.comment.dto.CommentResponseDto;
+import study.basic_board.domain.board.comment.dto.CommentUpdateRequestDto;
+import study.basic_board.domain.board.entity.Board;
+import study.basic_board.domain.board.comment.entity.Comment;
+import study.basic_board.domain.user.entity.User;
+import study.basic_board.domain.board.repository.BoardRepository;
+import study.basic_board.domain.board.comment.repository.CommentRepository;
+import study.basic_board.domain.user.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

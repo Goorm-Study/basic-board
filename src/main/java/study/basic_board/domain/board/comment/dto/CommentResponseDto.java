@@ -1,8 +1,8 @@
-package study.basic_board.dto.comment;
+package study.basic_board.domain.board.comment.dto;
 
 
 import lombok.Getter;
-import study.basic_board.entity.Comment;
+import study.basic_board.domain.board.comment.entity.Comment;
 
 import java.time.LocalDateTime;
 

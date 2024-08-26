@@ -1,4 +1,4 @@
-package study.basic_board.dto.comment;
+package study.basic_board.domain.board.comment.dto;
 
 
 import lombok.Getter;

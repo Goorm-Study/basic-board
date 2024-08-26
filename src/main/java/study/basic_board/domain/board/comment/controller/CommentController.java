@@ -1,10 +1,10 @@
-package study.basic_board.controller;
+package study.basic_board.domain.board.comment.controller;
 
 import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import study.basic_board.dto.comment.CommentCreateRequestDto;
-import study.basic_board.dto.comment.CommentResponseDto;
-import study.basic_board.service.CommentService;
+import study.basic_board.domain.board.comment.dto.CommentCreateRequestDto;
+import study.basic_board.domain.board.comment.dto.CommentResponseDto;
+import study.basic_board.domain.board.comment.service.CommentService;
 
 import java.util.List;
 
