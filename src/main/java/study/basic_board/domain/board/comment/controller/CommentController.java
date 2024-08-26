@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import study.basic_board.domain.board.comment.dto.CommentCreateRequestDto;
 import study.basic_board.domain.board.comment.dto.CommentResponseDto;
+import study.basic_board.domain.board.comment.dto.CommentUpdateRequestDto;
 import study.basic_board.domain.board.comment.service.CommentService;
 
 import java.util.List;
@@ -28,8 +29,8 @@ public class CommentController {
     // 댓글 수정
     // 약간 비효율 : commentId가 중복됨.
     @PutMapping("/boards/{id}/comments/{commentId}")
-    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentCreateRequestDto commentCreateRequestDto) {
-        return commentService.updateComment(commentId, commentCreateRequestDto);
+    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentUpdateRequestDto requestDto) {
+        return commentService.updateComment(commentId, requestDto);
     }
 
     // 댓글 삭제
