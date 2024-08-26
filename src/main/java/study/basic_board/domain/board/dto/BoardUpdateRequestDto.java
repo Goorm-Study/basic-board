@@ -1,4 +1,4 @@
-package study.basic_board.dto.board;
+package study.basic_board.domain.board.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,15 +1,15 @@
-package study.basic_board.service;
+package study.basic_board.domain.board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.basic_board.dto.board.BoardCreateRequestDto;
-import study.basic_board.dto.board.BoardUpdateRequestDto;
-import study.basic_board.dto.board.BoardResponseDto;
-import study.basic_board.entity.Board;
-import study.basic_board.entity.User;
-import study.basic_board.repository.BoardRepository;
-import study.basic_board.repository.UserRepository;
+import study.basic_board.domain.board.dto.BoardCreateRequestDto;
+import study.basic_board.domain.board.dto.BoardUpdateRequestDto;
+import study.basic_board.domain.board.dto.BoardResponseDto;
+import study.basic_board.domain.board.entity.Board;
+import study.basic_board.domain.user.entity.User;
+import study.basic_board.domain.board.repository.BoardRepository;
+import study.basic_board.domain.user.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

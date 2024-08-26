@@ -1,18 +1,20 @@
-package study.basic_board.entity;
+package study.basic_board.domain.board.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import study.basic_board.base.BaseTimeEntity;
-import study.basic_board.dto.board.BoardCreateRequestDto;
-import study.basic_board.dto.board.BoardUpdateRequestDto;
+import lombok.*;
+import study.basic_board.domain.base.BaseTimeEntity;
+import study.basic_board.domain.user.entity.User;
+import study.basic_board.domain.board.dto.BoardCreateRequestDto;
+import study.basic_board.domain.board.dto.BoardUpdateRequestDto;
+import study.basic_board.domain.board.comment.entity.Comment;
 
 import java.util.List;
 
 @Entity // DB 테이블
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

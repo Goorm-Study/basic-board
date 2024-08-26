@@ -1,7 +1,7 @@
-package study.basic_board.dto.board;
+package study.basic_board.domain.board.dto;
 
 import lombok.Getter;
-import study.basic_board.entity.Board;
+import study.basic_board.domain.board.entity.Board;
 
 import java.time.LocalDateTime;
 
