@@ -80,4 +80,23 @@ class UserIntegrationTest extends BaseIntegrationTest {
         mvc.perform(delete("/users/{id}", savedUser.getUserId()))
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    @DisplayName("모든 사용자 페이징 조회 테스트")
+    void getAllUsersWithPagingTest() throws Exception {
+        // given
+        userRepository.save(new User("john_doe", "John", LocalDate.of(1990, 1, 1)));
+        userRepository.save(new User("jane_doe", "Jane", LocalDate.of(1995, 5, 5)));
+
+        // when, then
+        mvc.perform(get("/users")
+                        .param("page", "0")  // 페이지 번호
+                        .param("size", "10") // 페이지 크기
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].username").value("john_doe")) // 첫 번째 사용자
+                .andExpect(jsonPath("$.content[1].username").value("jane_doe")) // 두 번째 사용자
+                .andExpect(jsonPath("$.totalElements").value(2))  // 총 사용자 수 확인
+                .andExpect(jsonPath("$.totalPages").value(1));  // 총 페이지 수 확인
+    }
 }

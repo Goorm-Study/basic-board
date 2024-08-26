@@ -3,6 +3,8 @@ package com.basic_board.controller;
 import com.basic_board.dto.BoardDto;
 import com.basic_board.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +34,8 @@ public class BoardController {
 
     // 모든 게시글 조회
     @GetMapping
-    public ResponseEntity<List<BoardDto.Response>> getAllBoards() {
-        List<BoardDto.Response> response = boardService.getAllBoards();
+    public ResponseEntity<Page<BoardDto.Response>> getAllBoards(Pageable pageable) {
+        Page<BoardDto.Response> response = boardService.getAllBoards(pageable);
         return ResponseEntity.ok(response);
     }
 

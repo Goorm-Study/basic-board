@@ -3,6 +3,8 @@ package com.basic_board.controller;
 import com.basic_board.dto.CommentDto;
 import com.basic_board.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +34,9 @@ public class CommentController {
 
     // 모든 댓글 조회
     @GetMapping
-    public ResponseEntity<List<CommentDto.Response>> getAllComments() {
-        List<CommentDto.Response> responses = commentService.getAllComments();
-        return ResponseEntity.ok(responses);
+    public ResponseEntity<Page<CommentDto.Response>> getAllComments(Pageable pageable) {
+        Page<CommentDto.Response> response = commentService.getAllComments(pageable);
+        return ResponseEntity.ok(response);
     }
 
     // 댓글 수정
