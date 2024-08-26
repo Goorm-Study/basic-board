@@ -1,13 +1,15 @@
-package study.basic_board.entity;
+package study.basic_board.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import study.basic_board.dto.user.UserDto;
+import study.basic_board.domain.board.entity.Board;
+import study.basic_board.domain.board.comment.entity.Comment;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 // 근데 로그인 기능이 없는데,
@@ -18,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본생성자는 막기
 public class User {
     @Id // primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userId")
     private Long id;
 
@@ -30,30 +33,23 @@ public class User {
     @Column(nullable = false, unique = true)
     private String nickname;
 
-    @Column(nullable = false)
-    private LocalDateTime createdTime;
-
-    private LocalDateTime modifiedTime;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Board> boards = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)
-    private List<Board> boards;
+    private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Comment> comments;
-
-    // 유저 등록할 때 생성자
-    public User(UserDto userDto) {
-        this.username = userDto.getUsername();
-        this.birth = userDto.getBirth();
-        this.nickname = userDto.getNickname();
-        this.createdTime = LocalDateTime.now();
+    @Builder
+    public User(String username, String nickname, LocalDate birth) {
+        this.username = username;
+        this.nickname = nickname;
+        this.birth = birth;
     }
 
-    // 유저 정보 수정할 때 메서드
-    public void updateUser(UserDto userDto) {
-        this.username = userDto.getUsername();
-        this.nickname = userDto.getNickname();
-        this.modifiedTime = LocalDateTime.now();
+    public void updateUser(String username, String nickname, LocalDate birth) {
+        this.username = username;
+        this.nickname = nickname;
+        this.birth = birth;
     }
 
 }
