@@ -1,5 +1,6 @@
-package study.basic_board.base;
+package study.basic_board.domain.base;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 public class BaseTimeEntity {
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createTime;
 
     @LastModifiedDate
